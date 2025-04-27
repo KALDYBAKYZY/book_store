@@ -1,7 +1,6 @@
 package config
 
 import (
-	"ginExample/models"
 	"log"
 
 	"gorm.io/driver/postgres"
@@ -16,9 +15,6 @@ func ConnectDatabase() {
 	if err != nil {
 		log.Fatal("Failed to connect to database:", err)
 	}
-
-	// Auto migrate your models
-	database.AutoMigrate(&models.Author{}, &models.Category{}, &models.Book{}, &models.User{})
 
 	DB = database
 }
