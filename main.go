@@ -22,6 +22,11 @@ func main() {
 	protected := r.Group("/")
 	protected.Use(middleware.AuthMiddleware())
 	{
+		//Favourites
+		protected.GET("/books/favorites", handlers.GetFavorites)
+		protected.PUT("/books/:id/favorites", handlers.AddFavorite)
+		protected.DELETE("/books/:id/favorites", handlers.DeleteFavorite)
+
 		// Book routes
 		protected.GET("/books", handlers.GetBooks)
 		protected.POST("/books", handlers.AddBook)

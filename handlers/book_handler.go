@@ -54,7 +54,7 @@ func GetBooks(c *gin.Context) {
 func AddBook(c *gin.Context) {
 	var newBook models.Book
 	if err := c.ShouldBindJSON(&newBook); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid input"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -65,12 +65,10 @@ func AddBook(c *gin.Context) {
 
 	result := config.DB.Create(&newBook)
 	if result.Error != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to add book"})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": result.Error.Error()})
 		return
 	}
 
-	// Fetch the complete book data with related entities
-	config.DB.Preload("Author").Preload("Category").First(&newBook, newBook.ID)
 	c.JSON(http.StatusCreated, newBook)
 }
 
